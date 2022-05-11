@@ -32,7 +32,6 @@ class Titles(models.Model):
     description = models.TextField
     genre = models.ManyToManyField(
         Genres,
-        # on_delete=models.SET_NULL,
         related_name='titles',
         verbose_name='Жанр'
     )
