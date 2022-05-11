@@ -3,17 +3,17 @@ from django.db import models
 import datetime as dt
 
 
-class Categories(models.Model):
+class Category(models.Model):
     name = models.CharField("Категории (типы) произведений", max_length=256)
     slug = models.SlugField(unique=True)
 
 
-class Genres(models.Model):
+class Genre(models.Model):
     name = models.CharField("Жанры произведений", max_length=256)
     slug = models.SlugField(unique=True)
 
 
-class Titles(models.Model):
+class Title(models.Model):
     name = models.CharField("Имя произведения", max_length=256)
     year = models.IntegerField(
         "Год выпуска",
@@ -31,12 +31,12 @@ class Titles(models.Model):
     )
     description = models.TextField
     genre = models.ManyToManyField(
-        Genres,
+        Genre,
         related_name='titles',
         verbose_name='Жанр'
     )
     category = models.ForeignKey(
-        Categories,
+        Category,
         on_delete=models.SET_NULL,
         null=True,
         related_name='titles',
