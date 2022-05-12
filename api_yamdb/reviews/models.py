@@ -1,7 +1,11 @@
 import datetime as dt
 
+from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+
+User = get_user_model()
+
 
 
 class Category(models.Model):
@@ -19,8 +23,8 @@ class Title(models.Model):
     year = models.IntegerField(
         "Год выпуска",
         validators=[
-           MaxValueValidator(dt.datetime.now().year),
-           MinValueValidator(1)
+            MaxValueValidator(dt.datetime.now().year),
+            MinValueValidator(1)
         ]
     )
     rating = models.IntegerField(
@@ -48,3 +52,27 @@ class Title(models.Model):
         verbose_name='Категория'
 
     )
+
+class Review(models.Model):
+    title = models.ForeignKey(Title, on_delete=models.CASCADE,
+                              verbose_name='заголовок')
+    text = models.TextField(verbose_name='текст')
+    author = models.ForeignKey(User, on_delete=models.CASCADE,
+                               verbose_name='автор')
+    pub_date = models.DateTimeField(auto_now_add=True,
+                                    verbose_name='дата публикации')
+    rating = models.IntegerField(verbose_name='Рейтинг',
+                                 validators=[
+                                     MaxValueValidator(10),
+                                     MinValueValidator(1)
+                                 ])
+
+
+class Comment(models.Model):
+    review = models.ForeignKey(Review, on_delete=models.CASCADE,
+                               verbose_name='отзыв')
+    text = models.TextField(verbose_name='текст')
+    author = models.ForeignKey(User, on_delete=models.CASCADE,
+                               verbose_name='автор')
+    pub_date = models.DateTimeField(auto_now_add=True,
+                                    verbose_name='дата публикации')
