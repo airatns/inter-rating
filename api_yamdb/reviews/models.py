@@ -7,6 +7,7 @@ from django.db import models
 User = get_user_model()
 
 
+
 class Category(models.Model):
     name = models.CharField("Категории (типы) произведений", max_length=256)
     slug = models.SlugField(unique=True)
@@ -28,12 +29,16 @@ class Title(models.Model):
     )
     rating = models.IntegerField(
         "Рейтинг",
+        null=True,
         validators=[
             MaxValueValidator(10),
             MinValueValidator(1)
         ]
     )
-    description = models.TextField
+    description = models.TextField(
+        "Описание",
+        null=True
+    )
     genre = models.ManyToManyField(
         Genre,
         related_name='titles',
@@ -47,7 +52,6 @@ class Title(models.Model):
         verbose_name='Категория'
 
     )
-
 
 class Review(models.Model):
     title = models.ForeignKey(Title, on_delete=models.CASCADE,
