@@ -1,6 +1,7 @@
+import datetime as dt
+
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-import datetime as dt
 
 
 class Category(models.Model):
@@ -24,12 +25,16 @@ class Title(models.Model):
     )
     rating = models.IntegerField(
         "Рейтинг",
+        null=True,
         validators=[
-           MaxValueValidator(10),
-           MinValueValidator(1)
+            MaxValueValidator(10),
+            MinValueValidator(1)
         ]
     )
-    description = models.TextField
+    description = models.TextField(
+        "Описание",
+        null=True
+    )
     genre = models.ManyToManyField(
         Genre,
         related_name='titles',
@@ -43,5 +48,3 @@ class Title(models.Model):
         verbose_name='Категория'
 
     )
-
-# Create your models here.
