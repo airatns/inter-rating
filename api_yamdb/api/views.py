@@ -3,11 +3,13 @@ from rest_framework import filters
 from rest_framework import mixins
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
-from reviews.models import Genre, Category, Title
+from reviews.models import Genre, Category, Title, Review
+from reviews.serializers import ReviewSerializer
+from rest_framework import  permissions
 from .filters import TitleFilter
-
 from .permissions import AdminOrReadOnly
-from .serializers import GenreSerializer, CategorySerializer, TitleSerializer, TitleListSerializer
+from .serializers import GenreSerializer, CategorySerializer, TitleSerializer, \
+    TitleListSerializer
 
 
 class GenresViewSet(mixins.ListModelMixin,
@@ -53,3 +55,12 @@ class TitlesViewSet(mixins.ListModelMixin,
         if self.action in ['list', 'retrieve']:
             return TitleListSerializer
         return TitleSerializer
+
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    serializer_class = ReviewSerializer
+    pagination_class = PageNumberPagination
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_queryset(self):
+        return Review.objects.filter(title=self.kwargs['title_pk'])
