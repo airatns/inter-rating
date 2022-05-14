@@ -1,11 +1,12 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework import mixins
+from rest_framework import permissions
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
-from reviews.models import Genre, Category, Title, Review
-from reviews.serializers import ReviewSerializer
-from rest_framework import  permissions
+from reviews.models import Genre, Category, Title, Review, Comment
+from reviews.serializers import ReviewSerializer, CommentSerializer
+
 from .filters import TitleFilter
 from .permissions import AdminOrReadOnly
 from .serializers import GenreSerializer, CategorySerializer, TitleSerializer, \
@@ -63,4 +64,14 @@ class ReviewViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        return Review.objects.filter(title=self.kwargs['title_pk'])
+        return Review.objects.filter(title_id=self.kwargs['title_pk'])
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    serializer_class = CommentSerializer
+    pagination_class = PageNumberPagination
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_queryset(self):
+        return Comment.objects.filter(review_id=self.kwargs['review_pk'],
+                                      review__title_id=self.kwargs['title_pk'])
