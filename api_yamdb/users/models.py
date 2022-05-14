@@ -43,6 +43,7 @@ class UserManager(BaseUserManager):
         user.role = role
         user.bio = bio
         user.is_superuser = True
+        user.is_staff = True
         user.save()
         return user
 

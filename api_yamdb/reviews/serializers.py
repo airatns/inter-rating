@@ -1,23 +1,47 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
-from rest_framework_nested import serializers as nested_serializers
 
-from .models import Comment, Review
+from .models import Comment, Review, Title
 
 
-class ReviewSerializer(serializers.HyperlinkedModelSerializer):
+class ReviewSerializer(serializers.ModelSerializer):
+    author = serializers.SlugRelatedField(
+        read_only=True, slug_field='username'
+    )
+
     class Meta:
         model = Review
-        fields = '__all__'
+        exclude = ['title']
+        extra_kwargs = {
+            'title': {'write_only': True}
+        }
 
 
-class TitleReviewSerializer(
-    nested_serializers.NestedHyperlinkedModelSerializer):
-    class Meta:
-        model = Review
-        fields = '__all__'
+    def create(self, validated_data):
+        validated_data['author'] = self.context['request'].user
+        view = self.context.get('view')
+        title_pk = view.kwargs['title_pk'] if view else None
+        validated_data['title'] = get_object_or_404(Title, pk=title_pk)
+        return super().create(validated_data)
 
 
-class CommentSerializer(serializers.HyperlinkedModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
+    author = serializers.SlugRelatedField(
+        read_only=True, slug_field='username'
+    )
+
     class Meta:
         model = Comment
-        fields = '__all__'
+        exclude = ['review']
+        extra_kwargs = {
+            'review': {'write_only': True}
+        }
+
+    def create(self, validated_data):
+        validated_data['author'] = self.context['request'].user
+        view = self.context.get('view')
+        title_pk = view.kwargs['title_pk'] if view else None
+        get_object_or_404(Title, pk=title_pk)
+        review_pk = view.kwargs['review_pk'] if view else None
+        validated_data['review'] = get_object_or_404(Review, pk=review_pk)
+        return super().create(validated_data)
