@@ -1,13 +1,19 @@
+import jwt
 import os
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import CreateAPIView
-from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from users.serializers import SignUpSerializer, TokenSerializer
+from rest_framework.decorators import api_view
+from users.serializers import UserSerializer, TokenSerializer
 from users.models import User
 from rest_framework_simplejwt.settings import api_settings
+from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework import generics, viewsets
+from cryptography.hazmat.primitives import serialization
 
 
 def create_confirmation_code(username, email):
@@ -17,7 +23,7 @@ def create_confirmation_code(username, email):
     code = default_token_generator.make_token(user)
     send_mail(
         subject='Registration token',
-        message=f'Пожалуйста, используйте этот токен {code}',
+        message=f'Привет {username}. Пожалуйста, используйте этот токен {code}',
         from_email='from@example.com',
         recipient_list=[email],
     )
@@ -27,13 +33,28 @@ def create_confirmation_code(username, email):
     return code
 
 
-class SignUpView(CreateAPIView):
+# def create_jwt_token(user):
+#     payload_data = {
+#         'token_type': 'access',
+#         'exp': 1665736555,
+#         'user_id': user.id,
+#     }
+#     key_data = 'secret'
+#     token = jwt.encode(
+#         payload=payload_data,
+#         key=key_data,
+#         algorithm='HS256'
+#     )
+#     return token
+
+
+class SignUp(CreateAPIView):
     """Регистрация нового пользователя.
     """
     permission_classes = (AllowAny,)
-    serializer_class = SignUpSerializer
+    serializer_class = UserSerializer
 
-    def create(self, request):
+    def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -45,48 +66,35 @@ class SignUpView(CreateAPIView):
         return Response(serializer.data)
 
 
-# def create_jwt_token(user):
-#     payload_data = {
-#         'sub': 'user.id',
-#         'nickname': 'user.username',
-#         'role': 'user.role',
-#     }
-#     secret = os.environ['SECRET_KEY']
+class Token(CreateAPIView):
+    """Запрос на JWT-токен.
+    """
+    permission_classes = (AllowAny,)
+    serializer_class = TokenSerializer
 
-# class TokenView(CreateAPIView):
-#     """Запрос на JWT-токен.
-#     """
-#     permission_classes = (AllowAny,)
-#     serializer_class = TokenSerializer
-
-#     def check_token(self, username, code):
-#         """Проверяем, корректен ли код подтверждения.
-#         Если код корректен, выдаем токен.
-#         """
-#         user = get_object_or_404(User, username=username)
-#         if user.confirmation_code==code:
-#             token = create_jwt_token(user)
-#             return token
-#         return Response('Код подтверждения некорректен')
-
-        
-    
-    
-#     def create(self, request):
-#         user = get_object_or_404(User, username=request.user)
-#         if user is not None and default_token_generator.check_token(user, code):
-#             serializer = self.serializer_class(data=request.data)
-#             serializer.is_valid(raise_exception=True)
-#             serializer.save()
-#             return Response('Токен для ваших запросов: {}'.format(token))
+    def post(self, request):
+        """Проверяем, корректен ли код подтверждения.
+        Если код корректен, выдаем токен.
+        """
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = get_object_or_404(User, username=serializer.data['username'])
+        if user.confirmation_code != serializer.data['confirmation_code']:
+            return Response('Код подтверждения некорректен')
+        token = AccessToken.for_user(user)      # def
+        return Response(str(token))
 
 
+class UserAccountDetail(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
 
-    # def get_token(username, token):
-    #     user = get_object_or_404(User, username=username)
-    #     if user is not None and default_token_generator.check_token(user, token):
-    #         jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-    #         jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-    #         payload = jwt_payload_handler(user)
-    #         token = jwt_encode_handler(payload)
-    #         return Response('Токен для ваших запросов: {}'.format(token))
+    # def get_queryset(self):
+    #     new_queryset = User.objects.get(username=self.request.user.username)
+    #     return new_queryset
+
+    def get(self, request):
+        user = get_object_or_404(User, username=self.request.user.username)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+

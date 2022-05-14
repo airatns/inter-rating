@@ -80,7 +80,7 @@ class User(AbstractUser):
         default='user'
     )
     confirmation_code = models.CharField(
-        'Токен',
+        'Код подтверждения',
         max_length=256,
         blank=True,
         null=True
