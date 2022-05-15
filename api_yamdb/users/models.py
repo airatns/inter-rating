@@ -1,7 +1,3 @@
-# import jwt
-
-# from datetime import datetime, timedelta
-# from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 
@@ -38,7 +34,9 @@ class UserManager(BaseUserManager):
         if password is None:
             raise TypeError('Suoeruser must have a password')
         user = self.create_user(username, email, password)
+        user.role = 'admin'
         user.is_superuser = True
+        user.is_staff = True
         user.save()
         return user
 
@@ -86,12 +84,16 @@ class User(AbstractUser):
         null=True
     )
 
-    REQUIRED_FIELDS = ['email']
-
     objects = UserManager()
     """Сообщаем Django, что для работы с объектами этого типа нужно использовать
     определенный выше класс UserManager.
     """
+
+    REQUIRED_FIELDS = ['email']
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
     def __str__(self):
         """Метод возвращает строковое представление текущего User.
