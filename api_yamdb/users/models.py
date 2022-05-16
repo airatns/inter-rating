@@ -15,7 +15,7 @@ class UserManager(BaseUserManager):
     Все, что нам остается сделать - переопределить функцию create_user(),
     которую мы будем использовать для создания объектов User.
     """
-    def create_user(self, username, email, password=None):
+    def create_user(self, username, email, password=None, **extra_fields):
         """Метод создает и возвращает модель User
         с электронной почтой и именем пользователя.
         """
@@ -28,11 +28,13 @@ class UserManager(BaseUserManager):
         user.save()
         return user
 
-    def create_superuser(self, username, email, password):
+    def create_superuser(
+        self, username, email, password, role='admin', **extra_fields
+    ):
         """Метод создает и возвращает модель User с правами суперпользователя.
         """
         if password is None:
-            raise TypeError('Suoeruser must have a password')
+            raise TypeError('Superuser must have a password')
         user = self.create_user(username, email, password)
         user.role = 'admin'
         user.is_superuser = True

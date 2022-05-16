@@ -2,7 +2,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 
-from rest_framework import filters, viewsets
+from rest_framework import filters, status, viewsets
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -48,7 +48,10 @@ class SignUp(CreateAPIView):
         email = serializer.data['email']
         create_confirmation_code(username, email)
 
-        return Response(serializer.data)
+        return Response(
+            {'email': email,
+             'username': username},
+            status=status.HTTP_200_OK)
 
 
 class Token(CreateAPIView):
@@ -65,7 +68,10 @@ class Token(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = get_object_or_404(User, username=serializer.data['username'])
         if user.confirmation_code != serializer.data['confirmation_code']:
-            return Response('Код подтверждения некорректен')
+            return Response(
+                'Код подтверждения некорректен',
+                status=status.HTTP_400_BAD_REQUEST
+            )
         token = AccessToken.for_user(user)
         return Response(str(token))
 
@@ -97,7 +103,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = AdminSerializer
-    permission_classes = (IsAdmin,)
+    permission_classes = (IsAuthenticated, IsAdmin,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('username',)
     lookup_field = 'username'
