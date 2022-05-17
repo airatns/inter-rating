@@ -6,8 +6,8 @@ from rest_framework.validators import UniqueValidator
 from users.models import User, CHOICES
 
 
-class UserSerializer(serializers.ModelSerializer):
-    """Сериалайзер для пользователя.
+class SignUpSerializer(serializers.ModelSerializer):
+    """Сериалайзер для регистрации пользователя.
     """
     username = CharField(
         validators=[UniqueValidator(queryset=User.objects.all())]
@@ -29,6 +29,27 @@ class UserSerializer(serializers.ModelSerializer):
                 'имя "me" является системным и не может быть выбрано'
             )
         return username
+
+
+class TokenSerializer(serializers.ModelSerializer):
+    """Сериалайзер на выдачу токена.
+    """
+    username = serializers.CharField(required=True,)
+
+    class Meta:
+        model = User
+        fields = ('username', 'confirmation_code',)
+
+
+class MeSerializer(serializers.ModelSerializer):
+    """Сериалайзер для редактирвоания своих данных пользователем.
+    """
+    class Meta:
+        model = User
+        fields = (
+            'username', 'email', 'first_name', 'last_name', 'bio', 'role'
+        )
+        read_only_fields = ('username', 'email', 'role',)
 
 
 class AdminSerializer(serializers.ModelSerializer):
@@ -54,13 +75,3 @@ class AdminSerializer(serializers.ModelSerializer):
                 'имя "me" является системным и не может быть выбрано'
             )
         return username
-
-
-class TokenSerializer(serializers.ModelSerializer):
-    """Сериалайзер на выдачу токена.
-    """
-    username = serializers.CharField(required=True,)
-
-    class Meta:
-        model = User
-        fields = ('username', 'confirmation_code',)

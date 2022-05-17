@@ -11,7 +11,7 @@ from rest_framework_simplejwt.tokens import AccessToken
 
 from users.models import User
 from users.permissions import IsAdmin
-from users.serializers import AdminSerializer, TokenSerializer, UserSerializer
+from users.serializers import AdminSerializer, MeSerializer, SignUpSerializer, TokenSerializer
 
 
 def create_confirmation_code(username, email):
@@ -34,7 +34,7 @@ class SignUp(CreateAPIView):
     """Регистрация нового пользователя.
     """
     permission_classes = (AllowAny,)
-    serializer_class = UserSerializer
+    serializer_class = SignUpSerializer
 
     def post(self, request):
         """После заполнения обязательных полей создается новый пользователь
@@ -81,16 +81,16 @@ class UserAccountDetail(APIView):
     Функционал пользователя.
     """
     permission_classes = (IsAuthenticated,)
-    serializer_class = UserSerializer
+    serializer_class = MeSerializer
 
     def get(self, request):
         user = get_object_or_404(User, username=self.request.user.username)
-        serializer = UserSerializer(user)
+        serializer = self.serializer_class(user)
         return Response(serializer.data)
 
     def patch(self, request):
         user = get_object_or_404(User, username=self.request.user.username)
-        serializer = UserSerializer(user, data=request.data)
+        serializer = self.serializer_class(user, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
