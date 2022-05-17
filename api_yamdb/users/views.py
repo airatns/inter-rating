@@ -102,7 +102,7 @@ class UserViewSet(viewsets.ModelViewSet):
     Добавление и удаление пользователя.
     Функционал администратора.
     """
-    queryset = User.objects.all()
+    queryset = User.objects.get_queryset().order_by('id')
     serializer_class = AdminSerializer
     permission_classes = (IsAuthenticated, IsAdmin)
     filter_backends = (filters.SearchFilter,)
