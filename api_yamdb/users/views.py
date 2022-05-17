@@ -11,7 +11,8 @@ from rest_framework_simplejwt.tokens import AccessToken
 
 from users.models import User
 from users.permissions import IsAdmin
-from users.serializers import AdminSerializer, MeSerializer, SignUpSerializer, TokenSerializer
+from users.serializers import AdminSerializer, MeSerializer
+from users.serializers import SignUpSerializer, TokenSerializer
 
 
 def create_confirmation_code(username, email):
