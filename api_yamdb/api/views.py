@@ -49,7 +49,7 @@ class TitlesViewSet(mixins.ListModelMixin,
     permission_classes = (AdminOrReadOnly,)
     pagination_class = PageNumberPagination
     filter_backends = (DjangoFilterBackend,)
-    filter_class = TitleFilter
+    filterset_class = TitleFilter
 
     def get_serializer_class(self):
         if self.action in ['list', 'retrieve']:
@@ -63,7 +63,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
     permission_classes = (IsObjectOwner,)
 
     def get_queryset(self):
-        return Review.objects.filter(title_id = self.kwargs['title_pk'])
+        return Review.objects.filter(title_id=self.kwargs['title_pk'])
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -72,6 +72,6 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsObjectOwner,)
 
     def get_queryset(self):
-        return Comment.objects.filter(review_id = self.kwargs['review_pk'],
-                                      review__title_id = self.kwargs[
+        return Comment.objects.filter(review_id=self.kwargs['review_pk'],
+                                      review__title_id=self.kwargs[
                                           'title_pk'])
