@@ -49,7 +49,7 @@ class TitlesViewSet(mixins.ListModelMixin,
     permission_classes = (AdminOrReadOnly,)
     pagination_class = PageNumberPagination
     filter_backends = (DjangoFilterBackend,)
-    filter_class = TitleFilter
+    filterset_class = TitleFilter
 
     def get_serializer_class(self):
         if self.action in ['list', 'retrieve']:

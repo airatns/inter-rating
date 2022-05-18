@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('reviews', '0002_auto_20220510_2036'),
     ]
-
+    atomic = False
     operations = [
         migrations.RenameModel(
             old_name='Categories',
