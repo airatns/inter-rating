@@ -4,7 +4,10 @@ from reviews.models import Title
 
 class TitleFilter(filters.FilterSet):
     genre = filters.CharFilter(field_name="genre__slug", method='filter_genre')
-    category = filters.CharFilter(field_name="category__slug", method='filter_category')
+    category = filters.CharFilter(
+        field_name="category__slug",
+        method='filter_category'
+    )
     name = filters.CharFilter(field_name="name", method='filter_name')
     year = filters.CharFilter(field_name="year", method='filter_year')
 

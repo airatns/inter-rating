@@ -8,8 +8,8 @@ from reviews.serializers import ReviewSerializer, CommentSerializer
 
 from .filters import TitleFilter
 from .permissions import AdminOrReadOnly, IsObjectOwner
-from .serializers import GenreSerializer, CategorySerializer, TitleSerializer, \
-    TitleListSerializer
+from .serializers import GenreSerializer, CategorySerializer, \
+    TitleSerializer, TitleListSerializer
 
 
 class GenresViewSet(mixins.ListModelMixin,
@@ -63,7 +63,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
     permission_classes = (IsObjectOwner,)
 
     def get_queryset(self):
-        return Review.objects.filter(title_id = self.kwargs['title_pk'])
+        return Review.objects.filter(title_id=self.kwargs['title_pk'])
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -72,6 +72,6 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = (IsObjectOwner,)
 
     def get_queryset(self):
-        return Comment.objects.filter(review_id = self.kwargs['review_pk'],
-                                      review__title_id = self.kwargs[
+        return Comment.objects.filter(review_id=self.kwargs['review_pk'],
+                                      review__title_id=self.kwargs[
                                           'title_pk'])
