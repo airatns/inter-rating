@@ -19,10 +19,6 @@ class UserManager(BaseUserManager):
         """Метод создает и возвращает модель User
         с электронной почтой и именем пользователя.
         """
-        if username is None:
-            raise TypeError('User must have a username.')
-        if email is None:
-            raise TypeError('User must have an email address.')
         user = self.model(
             username=username,
             email=self.normalize_email(email),
@@ -39,8 +35,6 @@ class UserManager(BaseUserManager):
     ):
         """Метод создает и возвращает модель User с правами суперпользователя.
         """
-        if password is None:
-            raise TypeError('Superuser must have a password')
         user = self.create_user(username, email, password, bio, role)
         user.role = 'admin'
         user.is_superuser = True
@@ -90,6 +84,7 @@ class User(AbstractUser):
         max_length=256,
         default='random'
     )
+    is_admin = models.BooleanField()
 
     objects = UserManager()
     """Сообщаем Django, что для работы с объектами этого типа нужно использовать
@@ -107,3 +102,11 @@ class User(AbstractUser):
         Эта строка используется при выводе модели User в консоли.
         """
         return self.username
+
+    @property
+    def is_admin(self):
+        return self.role == 'admin'
+
+    @property
+    def is_moderator(self):
+        return self.role == 'moderator'
