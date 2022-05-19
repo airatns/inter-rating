@@ -17,7 +17,6 @@ router_v1.register('users', UserViewSet, basename='users')
 review_router_v1 = routers.NestedDefaultRouter(router_v1, 'titles',
                                                lookup='title')
 review_router_v1.register('reviews', ReviewViewSet, basename='reviews')
-print(review_router_v1.urls)
 comment_router_v1 = routers.NestedDefaultRouter(review_router_v1, 'reviews',
                                                 lookup='review')
 comment_router_v1.register(r'comments', CommentViewSet, basename='comments')
