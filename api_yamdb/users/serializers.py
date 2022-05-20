@@ -31,14 +31,17 @@ class SignUpSerializer(serializers.ModelSerializer):
         return username
 
 
-class TokenSerializer(serializers.ModelSerializer):
+class TokenSerializer(serializers.Serializer):
     """Сериалайзер на выдачу токена.
     """
-    username = serializers.CharField(required=True,)
-
-    class Meta:
-        model = User
-        fields = ('username', 'confirmation_code',)
+    username = serializers.CharField(
+        required=True,
+        max_length=150
+    )
+    confirmation_code = serializers.CharField(
+        required=True,
+        max_length=256
+    )
 
 
 class MeSerializer(serializers.ModelSerializer):
