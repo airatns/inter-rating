@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from rest_framework import mixins
@@ -60,6 +61,12 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Review.objects.filter(title_id=self.kwargs['title_pk'])
 
+    def perform_create(self, serializer):
+        title = get_object_or_404(Title, pk=self.kwargs['title_pk'])
+        if serializer.is_valid():
+            serializer.save(author=self.request.user, title=title)
+        return super().perform_create(serializer)
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
@@ -70,3 +77,10 @@ class CommentViewSet(viewsets.ModelViewSet):
         return Comment.objects.filter(review_id=self.kwargs['review_pk'],
                                       review__title_id=self.kwargs[
                                           'title_pk'])
+
+    def perform_create(self, serializer):
+        title = get_object_or_404(Title, pk=self.kwargs['title_pk'])
+        review = get_object_or_404(Review, pk=self.kwargs['review_pk'])
+        if serializer.is_valid():
+            serializer.save(review=review, author=self.request.user)
+        return super().perform_create(serializer)
