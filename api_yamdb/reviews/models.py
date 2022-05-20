@@ -26,7 +26,7 @@ class Title(models.Model):
             MinValueValidator(1)
         ]
     )
-    rating = models.IntegerField(
+    rating = models.PositiveSmallIntegerField(
         "Рейтинг",
         null=True,
         validators=[

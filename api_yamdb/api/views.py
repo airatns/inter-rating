@@ -12,10 +12,13 @@ from .serializers import GenreSerializer, CategorySerializer, \
     TitleSerializer, TitleListSerializer
 
 
-class GenresViewSet(mixins.ListModelMixin,
-                    mixins.CreateModelMixin,
-                    mixins.DestroyModelMixin,
-                    viewsets.GenericViewSet):
+class CreateListDestroyViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
+                               mixins.DestroyModelMixin,
+                               viewsets.GenericViewSet):
+    pass
+
+
+class GenresViewSet(CreateListDestroyViewSet):
     queryset = Genre.objects.get_queryset().order_by('id')
     serializer_class = GenreSerializer
     lookup_field = 'slug'
@@ -25,10 +28,7 @@ class GenresViewSet(mixins.ListModelMixin,
     search_fields = ('name',)
 
 
-class CategoriesViewSet(mixins.ListModelMixin,
-                        mixins.CreateModelMixin,
-                        mixins.DestroyModelMixin,
-                        viewsets.GenericViewSet):
+class CategoriesViewSet(CreateListDestroyViewSet):
     queryset = Category.objects.get_queryset().order_by('id')
     serializer_class = CategorySerializer
     lookup_field = 'slug'
@@ -38,12 +38,7 @@ class CategoriesViewSet(mixins.ListModelMixin,
     search_fields = ('name',)
 
 
-class TitlesViewSet(mixins.ListModelMixin,
-                    mixins.RetrieveModelMixin,
-                    mixins.UpdateModelMixin,
-                    mixins.CreateModelMixin,
-                    mixins.DestroyModelMixin,
-                    viewsets.GenericViewSet):
+class TitlesViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.get_queryset().order_by('id')
     serializer_class = TitleSerializer
     permission_classes = (AdminOrReadOnly,)

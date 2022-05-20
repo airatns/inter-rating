@@ -1,3 +1,4 @@
+from django.db.models import Avg
 from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
 from reviews.models import Genre, Category, Title, Review
@@ -37,15 +38,10 @@ class TitleListSerializer(serializers.ModelSerializer):
 
     def get_rating(self, obj):
         reviews = Review.objects.filter(title=obj)
-        if len(reviews) > 0:
-            sum = 0
-            count = 0
-            for review in reviews:
-                count = count + 1
-                sum += review.score
-
-            return sum // count
-        return None
+        if len(reviews) == 0:
+            return None
+        res = reviews.aggregate(Avg('score'))
+        return res['score__avg']
 
     class Meta:
         fields = '__all__'
