@@ -63,20 +63,20 @@ Cоздать и активировать виртуальное окружен�
 >*python manage.py runserver*
 
 ## **Регистрация нового пользователя**
->*http://127.0.0.1:8000/api/v1/auth/signup/*
-
 Для регистрации введите **email** и **username**.
 
 Затем на ваш электронный почтвый ящик придёт **confirmation_code**.
 
-## **Получение JWT-токена**
->*http://127.0.0.1:8000/api/v1/auth/token/*
+![code](https://user-images.githubusercontent.com/96816183/182865245-3efea538-0ec7-4d16-b8cc-a2a16c1edff4.png)
 
+## **Получение JWT-токена**
 Для аутентификации введите **username** и **confirmation_code**.
 
 Вам будет выдан **token** для запросов к API.
 
 Срок действия токена **14 дней**.
+
+![token](https://user-images.githubusercontent.com/96816183/182865510-7f50333d-cf47-40d5-926d-5bcecbb2081d.png)
 
 ### **Пример использования JWT-токена**
 
@@ -87,80 +87,12 @@ Cоздать и активировать виртуальное окружен�
 
 ### **Изменение данных своей учетной записи**
 
->*http://127.0.0.1:8000/api/v1/users/me/*
-
-*Request*
-
->*"first_name": "first",*
-
->*"last_name": "forever"*
-
->*"bio": "I was born on January 1st"*
-
-*Response*
-
->*"username": "first#1",*
-
->*"email": "first#1@google.com",*
-
->*"first_name": "first",*
-
->*"last_name": "forever"*
-
->*"bio": "I was born on January 1st"*
-
->*"role": "user"*
+https://github.com/airatns/api_yamdb/issues/7#issue-1328684125
 
 ### **Удаление жанра**
 
->*DELETE /api/v1/genres/{slug}/*
-
-*Response*
-
->*HTTP Code: 204*
+![delete](https://user-images.githubusercontent.com/96816183/182865799-c96ff4d1-be79-4d89-ac7f-2f440c695f8b.png)
 
 ### **Добавление произведения**
 
->*POST /api/v1/titles/*
-
-*Request*
->{
->
->*"name": "Alien",*
-> 
->*"year": 1979*
->
->*"description": "In space no one can hear your scream"*
->
->*"genre": "horror"*
->
->*"category": "films"*
->
->}
-
-
-*Response*
->{
-> 
->*"id": 13,*
->
->*"name": "Alien",*
->
->*"year": 1979*
->
->*"rating": "None"*
->
->*"description": "In space no one can hear your scream"*
->
->*"genre"*: 
-> [{
-> *"slug": "horror"*,
-> *"name": "Ужасы"*
-> }]
->
->*"category"*: {
-> *"slug"*: *"films"*,
-> *"name"*: *"Кино"*
-> }
->
-> }
+![title](https://user-images.githubusercontent.com/96816183/182866123-b80f1a88-dbd5-497b-bb0d-4248252db3d9.png)
