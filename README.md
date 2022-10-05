@@ -41,13 +41,11 @@ Python, Django, Django REST Framework, Simple JWT, SQLite3
 Cоздать и активировать виртуальное окружение:
 
 >*python -m venv env*
-
 >*source env/scripts/activate*
 
 Установить зависимости из файла requirements.txt:
 
 >*python -m pip install --upgrade pip*
-
 >*pip install -r requirements.txt*
 
 Выполнить миграции:
