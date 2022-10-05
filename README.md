@@ -1,14 +1,16 @@
 # YaMDb
 
+<img src="https://github.com/devicons/devicon/blob/master/icons/python/python-original-wordmark.svg" title="HTML5" alt="HTML" width="40" height="40"/>&nbsp;
+<img src="https://github.com/devicons/devicon/blob/master/icons/django/django-plain-wordmark.svg" title="HTML5" alt="HTML" width="40" height="40"/>&nbsp;
+<img src="https://github.com/devicons/devicon/blob/master/icons/mysql/mysql-original-wordmark.svg" title="HTML5" alt="HTML" width="40" height="40"/>&nbsp;
+<img src="https://github.com/devicons/devicon/blob/master/icons/sqlite/sqlite-original-wordmark.svg" title="HTML5" alt="HTML" width="40" height="40"/>&nbsp;
+<img src="https://github.com/devicons/devicon/blob/master/icons/vscode/vscode-original-wordmark.svg" title="HTML5" alt="HTML" width="40" height="40"/>&nbsp;
+
 YaMDb - это проект, который собирает отзывы пользователей на произведения.
 
 Произведения делятся на категории: **"Книги"**, **"Фильмы"**, **"Музыка"**. Список категорий может быть расширен администратором.
 
 Пользователи оставляют текстовые отзывы и ставят произведению оценку в диапазоне от одного до десяти. Из усредненных оценок формируется **рейтинг**.
-
-## **Стек технологий**
-
-Python, Django, Django REST Framework, Simple JWT, SQLite3
 
 ## **Техническое описание проекта**
 
