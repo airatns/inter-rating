@@ -9,7 +9,7 @@ YaMDb is the community with users reviews of movies, books and music.
 
 Works of art are allocated into categories: **"Books"**, **"Movies"**, **"Musical compositions"**. Categories can be expanded by the administrator.
 
-Users leave comments on and rate a work of art in the range from one to ten. The final **rating** is based on user reviews.
+Users leave comments on and rate a work of art in the range from one to ten. **The final rating** is based on user reviews.
 
 ## **Technical overview**
 
