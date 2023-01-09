@@ -2,97 +2,90 @@
 
 <img src="https://github.com/devicons/devicon/blob/master/icons/python/python-original-wordmark.svg" title="HTML5" alt="HTML" width="40" height="40"/>&nbsp;
 <img src="https://github.com/devicons/devicon/blob/master/icons/django/django-plain-wordmark.svg" title="HTML5" alt="HTML" width="40" height="40"/>&nbsp;
-<img src="https://github.com/devicons/devicon/blob/master/icons/mysql/mysql-original-wordmark.svg" title="HTML5" alt="HTML" width="40" height="40"/>&nbsp;
 <img src="https://github.com/devicons/devicon/blob/master/icons/sqlite/sqlite-original-wordmark.svg" title="HTML5" alt="HTML" width="40" height="40"/>&nbsp;
 <img src="https://github.com/devicons/devicon/blob/master/icons/vscode/vscode-original-wordmark.svg" title="HTML5" alt="HTML" width="40" height="40"/>&nbsp;
 
-YaMDb - это проект, который собирает отзывы пользователей на произведения.
+YaMDb is the community with users reviews of movies, books and music.
 
-Произведения делятся на категории: **"Книги"**, **"Фильмы"**, **"Музыка"**. Список категорий может быть расширен администратором.
+Works of art are allocated into categories: **"Books"**, **"Movies"**, **"Musical compositions"**. Categories can be expanded by the administrator.
 
-Пользователи оставляют текстовые отзывы и ставят произведению оценку в диапазоне от одного до десяти. Из усредненных оценок формируется **рейтинг**.
+Users leave comments on and rate a work of art in the range from one to ten. The final **rating** is based on user reviews.
 
-## **Техническое описание проекта**
+## **Technical overview**
 
-Написаны бэкенд проекта и API для него.
+For the full description pls follow by the link after the app is run - <a href="http://127.0.0.1:8000/redoc" target="_blank">Redoc</a>
 
-Модель **User** переопределена.
+## **User roles:**
 
-База данных наполнена контентом из **csv**-файлов. 
+* **Guest**: has rights to read comments and see ratings.
 
-Полное описание можно найти по ссылке после запуска проекта - <a href="http://127.0.0.1:8000/redoc" target="_blank">Redoc</a>
+* **Authenticated user**: has rights to publish their own reviews, leave comments, rate works of art.
 
-## **Пользовательские роли:**
+* **Moderator**: has rights to delete and correct any reviews and comments.
 
-* **Аноним**: может читать отзывы и комментарии, просматривать описания произведений
+* **Administrator**: has rights to create and delete works of art, categories and genres, assign roles to users.
 
-* **Аутентифицированный пользователь**: может публиковать свои отзывы, комментировать чужие отзывы, ставить оценки произведениям.
+* **Superuser Django**: has full rights to manage the community.
 
-* **Модератор**: может удалять и редактировать любые отзывы и комментарии.
+## **Getting Started:**
 
-* **Администратор**: может создавать и удалять произведения, категории и жанры, назначать роли пользователям.
-
-* **Суперюзер Django**: полные права на управление всем проектом.
-
-## **Как запустить проект:**
-
-Клонировать репозиторий и перейти в него в командной строке:
+Clone the repository:
 
 >*git clone git@github.com:airatns/api_yamdb.git*
 
-Cоздать и активировать виртуальное окружение:
+Set up the virtual environment:
 
 >*python -m venv env* \
 >*source env/scripts/activate*
 
-Установить зависимости из файла requirements.txt:
+Install dependencies in the app using requirements.txt:
 
 >*python -m pip install --upgrade pip* \
 >*pip install -r requirements.txt*
 
-Выполнить миграции:
+Run migrations:
 
 >*python manage.py migrate*
 
-Залить данные:
+Import test data:
 
 >*python manage.py load_data*
 
-Запустить проект:
+Run the app locally:
 
 >*python manage.py runserver*
 
-## **Регистрация нового пользователя**
-Для регистрации введите **email** и **username**.
+## **New user registration**
+To sign up enter the **email** and **username**.
 
-Затем на ваш электронный почтовый ящик придёт **confirmation_code**.
+Then a letter with **confirmation_code** will be sent to your email.
 
 ![code](https://user-images.githubusercontent.com/96816183/182865245-3efea538-0ec7-4d16-b8cc-a2a16c1edff4.png)
 
-## **Получение JWT-токена**
-Для аутентификации введите **username** и **confirmation_code**.
+## **Getting a JWT-token**
+To sign in enter **username** and **confirmation_code**.
 
-Вам будет выдан **token** для запросов к API.
+A **token** will be issued for you.
 
-Срок действия токена **14 дней**.
+The validity period of the token is **14 days**.
 
 ![token](https://user-images.githubusercontent.com/96816183/182865510-7f50333d-cf47-40d5-926d-5bcecbb2081d.png)
 
-### **Пример использования JWT-токена**
+### **Example of using a JWT-token**
 
 >*Bearer ey8Df...*
 
 
-## **Примеры запросов к API**
+## **Examples of requests**
 
-### **Изменение данных своей учетной записи**
+### **Changing your credentials**
 
 ![bio](https://user-images.githubusercontent.com/96816183/182865718-c9ba2d37-d00f-4a6f-8ecd-eb06a9376adc.png)
 
-### **Удаление жанра**
+### **Deleting a genre**
 
 ![delete](https://user-images.githubusercontent.com/96816183/182865799-c96ff4d1-be79-4d89-ac7f-2f440c695f8b.png)
 
-### **Добавление произведения**
+### **Adding a work of art**
 
 ![title](https://user-images.githubusercontent.com/96816183/182866123-b80f1a88-dbd5-497b-bb0d-4248252db3d9.png)
