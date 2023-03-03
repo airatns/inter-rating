@@ -5,7 +5,7 @@
 <img src="https://github.com/devicons/devicon/blob/master/icons/sqlite/sqlite-original-wordmark.svg" title="HTML5" alt="HTML" width="40" height="40"/>&nbsp;
 <img src="https://github.com/devicons/devicon/blob/master/icons/vscode/vscode-original-wordmark.svg" title="HTML5" alt="HTML" width="40" height="40"/>&nbsp;
 
-YaMDb is the community with users reviews of movies, books and music. The backend was developed in Python using Django Rest Framework (API). The User model was updated and extended by additional fields. Also implemented custom authorization and authentication via a JWT. The data was imported to the database from a csv file using Django management command
+Inter Rating is the community with users reviews of movies, books and music. The backend was developed in Python using Django Rest Framework (API). The User model was updated and extended by additional fields. Also implemented custom authorization and authentication via a JWT. The data was imported to the database from a csv file using Django management command
 
 Works of art are allocated into categories: **"Books"**, **"Movies"**, **"Musical compositions"**. Categories can be expanded by the administrator.
 
@@ -31,7 +31,7 @@ For the full description pls follow by the link after the app is run - <a href="
 
 Clone the repository:
 
->*git clone git@github.com:airatns/api_yamdb.git*
+>*git clone git@github.com:airatns/inter-rating.git*
 
 Set up the virtual environment:
 
